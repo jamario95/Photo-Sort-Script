@@ -2,6 +2,8 @@ import os
 import shutil
 from datetime import datetime
 import sys
+import tkinter as tk
+from tkinter import filedialog
 
 def sort_by_date(folder_path):
     #Listing all the files in the directory
@@ -10,7 +12,7 @@ def sort_by_date(folder_path):
     # FIltering only for image files
     image_extensions = [".jpg", ".jepg", ".png"]
     image_files = [file for file in files if os.path.splitext(file)[1].lower() in image_extensions]
-    print("Image Files:", image_files)
+
 
     #Sorting images by modification time
     image_files.sort(key=lambda x: os.path.getmtime(os.path.join(folder_path, x)))
@@ -30,7 +32,16 @@ def sort_by_date(folder_path):
         # Move the file to the respective folder
         shutil.move(file_path, os.path.join(destination_folder, file))
 
+def select_folder():
+    root = tk.Tk()
+    root.withdraw()
 
+    folder_path = filedialog.askdirectory(title="Select folder")
+    if not folder_path:
+        print("Folder was not selected.")
+
+    sort_by_date(folder_path)
+    print("Files sorted!") 
 
 
 
@@ -38,10 +49,6 @@ def sort_by_date(folder_path):
 
 if __name__ == "__main__":
 
-    # Path to the folder using command line argument
-    folder_path = sys.argv[1]
-
-    # Sorting function
-    sort_by_date(folder_path)
+  select_folder()
 
 
